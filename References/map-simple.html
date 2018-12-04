@@ -69,6 +69,8 @@
     </style>
   </head>
   <body>
+    <input id="pac-input" class="controls" type="text" placeholder="Name">
+
     <div id="map"></div>
 
     <script>        
@@ -76,7 +78,7 @@
     var name = "Amit Dhir";
     var id =  "Amit_Dhir_1";
     var mapCenterLocation = {lat:31.6347485, lng:-8.0778939};
-    var newLatLng = {lat:36.7783, lng:118.4085};
+    var newLatLng = {lat:36.2449313, lng:-113.7316141};
     var planeColor = "whitePlane";
     var icons = {
         greenPlane : {
@@ -89,6 +91,10 @@
             icon : 'https://cdn2.iconfinder.com/data/icons/fatcow/32x32/plane.png'
         }
     };
+
+    function goClicked(){
+      alert(document.getElementById('name').innerHTML);
+    }
     
     function initMap() {
         // definePopupClass();
@@ -107,6 +113,10 @@
             id:id,
             icon:icons["blackPlane"].icon
         });
+
+        marker.setMap(null);
+
+        marker.setMap(map);
 
         // popup = new Popup(
         // newLatLng,
