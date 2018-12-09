@@ -22,6 +22,8 @@ namespace SignalRServer
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
+            services.AddCors();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
@@ -45,8 +47,16 @@ namespace SignalRServer
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseSignalR(routes => routes.MapHub<FlightSimulationHub>("/flightsimulationhub"));
+            app.UseCors(builder =>
+                builder
+                .AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials()
+                );
 
+            app.UseSignalR(routes => routes.MapHub<FlightSimulationHub>("/flightsimulationhub"));
+            
             app.UseMvc();
         }
     }
