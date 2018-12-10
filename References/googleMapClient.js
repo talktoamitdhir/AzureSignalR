@@ -1,8 +1,8 @@
 var connection = null;
 var map;
 var markers = [];
-var name = "Amit Dhir";
-var id =  "Amit_Dhir_1";
+var markers_array = [];
+var signalRHubUrl = "http://localhost:53537/flightsimulationhub";
 var mapCenterLocation = {lat:31.6347485, lng:-8.0778939};
 var icons = {
     greenPlane : {
@@ -19,7 +19,7 @@ var icons = {
 document.getElementById("submit").addEventListener("click", e=>{
     e.preventDefault();
     const personName = document.getElementById("personName").value;
-    connection.invoke("GetUpdateForStatus");
+    connection.invoke("GetUpdateForStatus",personName,"LAX_DELHI");
 });
     
 function initMap() {        
@@ -34,11 +34,12 @@ function initMap() {
 setupConnection = () => {
 
     connection = new signalR.HubConnectionBuilder()
-                    .withUrl("http://localhost:53537/flightsimulationhub")
-                    .build();
+    .withUrl(signalRHubUrl)
+    .build();
 
     connection.on("ReceiveUpdateForStatus",(update)=>{
-        placeMarker(update.lat,update.lng);
+        addUpdateConnectionIdData(update);
+        placeAllMarkers();
     });
 
     connection.on("NewFlight",(update)=>{
@@ -64,11 +65,43 @@ function placeMarker(lat,lng){
         title:name,
         id:id,
         icon:icons["whitePlane"].icon
-    });
-
-    marker.setMap(null);
+    });    
 
     marker.setMap(map);
+}
+
+function addUpdateConnectionIdData(data){
+    //console.log(markers);
+    //console.log(data.connectionId);
+    //console.log(markers.some(item => item.connectionId === data.connectionId));
+    if(markers.some(item => item.connectionId === data.connectionId))
+    {
+        var currentMarker = markers.find(item => item.connectionId === data.connectionId);
+        currentMarker.lat = data.lat;
+        currentMarker.lng = data.lng;
+    }else{
+        markers.push(data);
+    }
+}
+
+function placeAllMarkers(){
+
+    for (var i = 0; i < markers_array.length; i++) {
+        markers_array[i].setMap(null);
+      }
+
+    markers.forEach(function(feature) {
+        var marker = new google.maps.Marker({
+          position: {lat:feature.lat, lng:feature.lng},
+          icon:icons["whitePlane"].icon,
+          map: map,
+          title:feature.personName,
+          id:feature.connectionId
+        });
+
+        markers_array.push(marker);
+
+      });
 }
 
 setupConnection();
