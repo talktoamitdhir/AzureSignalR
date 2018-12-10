@@ -1,9 +1,6 @@
 # AzureSignalR
 
 This Project is to demostrate Azure SignalR Implementation
-https://developers.google.com/maps/documentation/javascript/examples/overlay-symbol-animate
-https://developers.google.com/maps/documentation/javascript/custom-markers
-https://developers.google.com/maps/documentation/javascript/examples/overlay-popup
 
 Db will have something like this
 
@@ -42,4 +39,8 @@ lng:845.541
   
 4. If there's no next latlng, Plane will just disappear.
 
-![Mock up](https://github.com/talktoamitdhir/learnangular/blob/master/AzureSignalR_MockUp.jpg)
+References
+https://developers.google.com/maps/documentation/javascript/examples/overlay-symbol-animate
+https://developers.google.com/maps/documentation/javascript/custom-markers
+https://developers.google.com/maps/documentation/javascript/examples/overlay-popup
+https://www.darrinward.com/lat-long/
