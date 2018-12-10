@@ -3,7 +3,6 @@ var map;
 var name = "Amit Dhir";
 var id =  "Amit_Dhir_1";
 var mapCenterLocation = {lat:31.6347485, lng:-8.0778939};
-var newLatLng = {lat:36.2449313, lng:-113.7316141};
 var planeColor = "whitePlane";
 var icons = {
     greenPlane : {
@@ -30,18 +29,6 @@ function initMap() {
         gestureHandling: "none",
         zoomControl: false
     });
-
-    var marker = new google.maps.Marker({
-        position:newLatLng,
-        map:map,
-        title:name,
-        id:id,
-        icon:icons["blackPlane"].icon
-    });
-
-    marker.setMap(null);
-
-    marker.setMap(map);
 }
 
 setupConnection = () => {
@@ -51,7 +38,7 @@ setupConnection = () => {
                     .build();
 
     connection.on("ReceiveUpdateForStatus",(update)=>{
-        alert(update);
+        placeMarker(update.lat,update.lng);
     });
 
     connection.on("NewFlight",(update)=>{
@@ -66,5 +53,22 @@ setupConnection = () => {
         .catch(err => console.error(err.toString()));
 
 };
+
+function placeMarker(lat,lng){
+    
+    var newLatLng = {lat:lat, lng:lng};
+
+    var marker = new google.maps.Marker({
+        position:newLatLng,
+        map:map,
+        title:name,
+        id:id,
+        icon:icons["whitePlane"].icon
+    });
+
+    marker.setMap(null);
+
+    marker.setMap(map);
+}
 
 setupConnection();
