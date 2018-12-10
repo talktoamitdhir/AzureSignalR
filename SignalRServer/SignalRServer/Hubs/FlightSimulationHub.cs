@@ -9,33 +9,26 @@ namespace SignalRServer.Hubs
 {
     public class FlightSimulationHub : Hub
     {
-        private static List<FlightData> LAX_DELHI = new List<FlightData>() {
-            new FlightData(){
-                orderId = 1,
-                lat = 36.2449313,
-                lng = -113.7316141
-            },
-            new FlightData(){
-                orderId = 2,
-                lat = 31.6347485,
-                lng = -8.0778939
-            },
-        };
+        
 
         public FlightSimulationHub()
         {
 
         }
 
-        public async Task GetUpdateForStatus()
+        public async Task GetUpdateForStatus(string personName, string routeName)
         {
             int i = 1;
-            do
+            while (LAX_DELHI.SingleOrDefault(s => s.orderId == i) != null)
             {
-                Thread.Sleep(5000);
-                await Clients.All.SendAsync("ReceiveUpdateForStatus", LAX_DELHI.SingleOrDefault(s => s.orderId == i));
+                Thread.Sleep(1000);
+                var nextFlightData = LAX_DELHI.SingleOrDefault(s => s.orderId == i);
+                nextFlightData.personName = personName;
+                nextFlightData.routeName = routeName;
+                nextFlightData.connectionId = Context.ConnectionId;
+                await Clients.All.SendAsync("ReceiveUpdateForStatus", nextFlightData);
                 i++;
-            } while (LAX_DELHI.SingleOrDefault(s => s.orderId == i) != null);
+            }
             await Clients.Caller.SendAsync("Finished");
         }
 

@@ -1,9 +1,9 @@
 var connection = null;
 var map;
+var markers = [];
 var name = "Amit Dhir";
 var id =  "Amit_Dhir_1";
 var mapCenterLocation = {lat:31.6347485, lng:-8.0778939};
-var planeColor = "whitePlane";
 var icons = {
     greenPlane : {
         icon : 'http://aux2.iconspalace.com/uploads/plane-icon-256.png'
@@ -55,7 +55,7 @@ setupConnection = () => {
 };
 
 function placeMarker(lat,lng){
-    
+
     var newLatLng = {lat:lat, lng:lng};
 
     var marker = new google.maps.Marker({
