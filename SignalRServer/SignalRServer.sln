@@ -3,7 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2026
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignalRServer", "SignalRServer\SignalRServer.csproj", "{9C05F68A-6FD8-4CA4-BA12-E3DECA20DC7A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SignalRServer", "SignalRServer\SignalRServer.csproj", "{9C05F68A-6FD8-4CA4-BA12-E3DECA20DC7A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SignalRClient", "SignalRClient", "{54F1FA69-79CC-4C42-8FCB-6F75D71CDD46}"
+	ProjectSection(SolutionItems) = preProject
+		..\References\googleMapClient.css = ..\References\googleMapClient.css
+		..\References\googleMapClient.js = ..\References\googleMapClient.js
+		..\References\map-simple.html = ..\References\map-simple.html
+		..\References\signalr.js = ..\References\signalr.js
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
