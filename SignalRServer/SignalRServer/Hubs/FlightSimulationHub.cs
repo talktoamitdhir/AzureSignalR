@@ -16,10 +16,11 @@ namespace SignalRServer.Hubs
 
         public async Task GetUpdateForStatus(string personName, string routeName)
         {
+            int sleepTimeInMs = 1000;
             int i = 1;
             do
             {
-                Thread.Sleep(1000);
+                Thread.Sleep(sleepTimeInMs);
                 var nextFlightData = Data.LocationDetails.LAX_DELHI.SingleOrDefault(s => s.orderId == i);
                 nextFlightData.personName = personName;
                 nextFlightData.routeName = routeName;
@@ -27,9 +28,8 @@ namespace SignalRServer.Hubs
                 await Clients.All.SendAsync("ReceiveUpdateForStatus", nextFlightData);
                 i++;
             } while (Data.LocationDetails.LAX_DELHI.FirstOrDefault(s => s.orderId == i) != null);
-
-            Thread.Sleep(6000);
-            await Clients.Caller.SendAsync("Finished");
+            Thread.Sleep(sleepTimeInMs);
+            await Clients.All.SendAsync("Finished", Context.ConnectionId);
         }
 
     }
