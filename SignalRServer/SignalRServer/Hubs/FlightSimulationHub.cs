@@ -29,7 +29,7 @@ namespace SignalRServer.Hubs
                 i++;
             } while (Data.LocationDetails.LAX_DELHI.FirstOrDefault(s => s.orderId == i) != null);
             Thread.Sleep(sleepTimeInMs);
-            await Clients.All.SendAsync("Finished", Context.ConnectionId);
+            await Clients.All.SendAsync("RemovePlane", Context.ConnectionId);
         }
 
     }
