@@ -20,7 +20,8 @@ var icons = {
 document.getElementById("submit").addEventListener("click", e=>{
     e.preventDefault();
     const personName = document.getElementById("personName").value;
-    connection.invoke("GetUpdateForStatus",personName,"LAX_DELHI");
+    const routeName = document.getElementById("startAddress").value + "_" + document.getElementById("destinationAddress").value;
+    connection.invoke("GetUpdateForStatus", personName, routeName);
 });
     
 function initMap() {        

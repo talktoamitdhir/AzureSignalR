@@ -1,4 +1,4 @@
-<html>
+﻿<html>
   <head>
     <title>Simple Map</title>
     <meta name="viewport" content="initial-scale=1.0">
@@ -7,10 +7,20 @@
   </head>
   <body>
     
-    <div id="inputDiv">
-      <input id="personName" class="controls" type="text" placeholder="Name" value="Amit D">
-      <input type="button" id="submit" value="Go" /> 
-    </div>
+      <div id="inputDiv">
+          <input id="personName" class="controls" type="text" placeholder="Name" value="">
+          <select id="startAddress">
+              <option value="DELHI">Delhi</option>
+              <option value="TOKYO">Tokyo</option>
+              <option value="LAX">Los Angeles</option>
+          </select>
+          <select id="destinationAddress">
+              <option value="DELHI">Delhi</option>
+              <option value="TOKYO">Tokyo</option>
+              <option value="LAX">Los Angeles</option>
+          </select>
+          <input type="button" id="submit" value="Go" />
+      </div>
     
     <div id="map"></div>
 

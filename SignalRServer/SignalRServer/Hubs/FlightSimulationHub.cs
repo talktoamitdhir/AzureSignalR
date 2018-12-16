@@ -16,21 +16,36 @@ namespace SignalRServer.Hubs
 
         public async Task GetUpdateForStatus(string personName, string routeName)
         {
-            int sleepTimeInMs = 1000;
+            switch (routeName)
+            {
+                case "LAX_DELHI":
+                    await InitiateFlight(personName, routeName, Data.LocationDetails.LAX_DELHI);
+                    break;
+                case "LAX_TOKYO":
+                    await InitiateFlight(personName, routeName, Data.LocationDetails.LAX_TOKYO);
+                    break;
+                default:
+                    // do nothing
+                    break;
+            }
+        }
+
+        private async Task InitiateFlight(string personName, string routeName, List<FlightData> flightDatas)
+        {
+            int sleepTimeInMs = 2000;
             int i = 1;
             do
             {
                 Thread.Sleep(sleepTimeInMs);
-                var nextFlightData = Data.LocationDetails.LAX_DELHI.SingleOrDefault(s => s.orderId == i);
+                var nextFlightData = flightDatas.SingleOrDefault(s => s.orderId == i);
                 nextFlightData.personName = personName;
                 nextFlightData.routeName = routeName;
                 nextFlightData.connectionId = Context.ConnectionId;
                 await Clients.All.SendAsync("ReceiveUpdateForStatus", nextFlightData);
                 i++;
-            } while (Data.LocationDetails.LAX_DELHI.FirstOrDefault(s => s.orderId == i) != null);
+            } while (flightDatas.FirstOrDefault(s => s.orderId == i) != null);
             Thread.Sleep(sleepTimeInMs);
             await Clients.All.SendAsync("RemovePlane", Context.ConnectionId);
         }
-
     }
 }
