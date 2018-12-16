@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace SignalRServer.Controllers
 {
-    [Route("api/[controller]")]
+    //[Route("api/[controller]")]
     [ApiController]
     public class ValuesController : ControllerBase
     {

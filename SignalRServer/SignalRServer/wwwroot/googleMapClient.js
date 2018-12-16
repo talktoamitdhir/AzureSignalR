@@ -1,7 +1,10 @@
+//https://www.countryflags.io/in/shiny/16.png
+
 var connection = null;
 var map;
 var markers = [];
 var markers_array = [];
+
 //var signalRHubUrl = "http://localhost:53537/flightsimulationhub";
 var signalRHubUrl = "https://signalr-monthly.azurewebsites.net/flightsimulationhub";
 var mapCenterLocation = { lat: 31.6347485, lng: -8.0778939 };
@@ -20,6 +23,10 @@ function initMap() {
         gestureHandling: "none",
         zoomControl: false
     });
+
+    placeJapanMarker();
+    placeIndiaMarker();
+    placeUsaMarker();
 }
 
 setupConnection = () => {
@@ -114,6 +121,33 @@ function placeAllMarkers(direction) {
 function removeFromMarkers(connectionId) {
     var currentMarker = markers.findIndex(item => item.connectionId === connectionId);
     markers.splice(currentMarker, 1);
+}
+
+function placeJapanMarker() {
+    var marker = new google.maps.Marker({
+        position: { lat: 36.2048, lng: 138.2529 },
+        icon: "japanFlag.png",
+        map: map,
+        title: 'Japan'
+    });
+}
+
+function placeIndiaMarker() {
+    var marker = new google.maps.Marker({
+        position: { lat: 20.5937, lng: 78.9629 },
+        icon: "indiaFlag.png",
+        map: map,
+        title: 'India'
+    });
+}
+
+function placeUsaMarker() {
+    var marker = new google.maps.Marker({
+        position: { lat: 37.0902, lng: -119.70306 },
+        icon: "usaFlag.png",
+        map: map,
+        title: 'United States'
+    });
 }
 
 setupConnection();
