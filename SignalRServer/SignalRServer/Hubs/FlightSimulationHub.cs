@@ -19,10 +19,10 @@ namespace SignalRServer.Hubs
             switch (routeName)
             {
                 case "LAX_DELHI":
-                    await InitiateFlight(personName, routeName, Data.LocationDetails.LAX_DELHI);
+                    await InitiateFlight(personName, routeName, Data.LocationDetails.LAX_DELHI_RIGHT, "right");
                     break;
                 case "LAX_TOKYO":
-                    await InitiateFlight(personName, routeName, Data.LocationDetails.LAX_TOKYO);
+                    await InitiateFlight(personName, routeName, Data.LocationDetails.LAX_TOKYO_RIGHT, "right");
                     break;
                 default:
                     // do nothing
@@ -30,7 +30,7 @@ namespace SignalRServer.Hubs
             }
         }
 
-        private async Task InitiateFlight(string personName, string routeName, List<FlightData> flightDatas)
+        private async Task InitiateFlight(string personName, string routeName, List<FlightData> flightDatas, string direction)
         {
             int sleepTimeInMs = 2000;
             int i = 1;
@@ -41,6 +41,7 @@ namespace SignalRServer.Hubs
                 nextFlightData.personName = personName;
                 nextFlightData.routeName = routeName;
                 nextFlightData.connectionId = Context.ConnectionId;
+                nextFlightData.direction = direction;
                 await Clients.All.SendAsync("ReceiveUpdateForStatus", nextFlightData);
                 i++;
             } while (flightDatas.FirstOrDefault(s => s.orderId == i) != null);

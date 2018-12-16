@@ -10,6 +10,7 @@ namespace SignalRServer.Dto
         public string routeName { get; set; }
         public double lat { get; set; }
         public double lng { get; set; }
+        public string direction { get; set; }
     }
 
 

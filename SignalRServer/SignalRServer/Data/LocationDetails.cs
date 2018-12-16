@@ -8,7 +8,7 @@ namespace SignalRServer.Data
 {
     public static partial class LocationDetails
     {
-        public static List<FlightData> LAX_DELHI = new List<FlightData>() {
+        public static List<FlightData> LAX_DELHI_RIGHT = new List<FlightData>() {
             new FlightData(){
                 orderId = 1,
                 lat = 35.32774,
@@ -36,7 +36,7 @@ namespace SignalRServer.Data
             }
         };
 
-        public static List<FlightData> LAX_TOKYO = new List<FlightData>() {
+        public static List<FlightData> LAX_TOKYO_RIGHT = new List<FlightData>() {
             new FlightData(){
                 orderId = 1,
                 lat = 35.32774,
