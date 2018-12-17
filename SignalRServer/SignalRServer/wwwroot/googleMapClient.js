@@ -52,8 +52,7 @@ setupConnection = () => {
     });
 
     connection.on("RemovePlane", (connectionId) => {
-        removeFromMarkers(connectionId);
-        placeAllMarkers("left", connectionId);
+        removeFromMarkers(connectionId);        
     });
 
     connection.on("SendDataToClient", (listOfMarkers) => {

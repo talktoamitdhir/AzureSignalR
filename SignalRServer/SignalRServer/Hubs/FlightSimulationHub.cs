@@ -13,6 +13,8 @@ namespace SignalRServer.Hubs
     {
         public static bool isSenderRunning = false;
 
+        public static int delay = 1000;
+
         private static List<FlightData> staticFlightData = new List<FlightData>();
 
         private static List<string> connectionsToBeRemoved = new List<string>();
@@ -79,11 +81,9 @@ namespace SignalRServer.Hubs
         {
             isSenderRunning = true;
 
-            int sleepTimeInMs = 2000;
-
             while (staticFlightData.Count(c => c.direction != "none") != 0)
             {
-                Thread.Sleep(sleepTimeInMs);
+                Thread.Sleep(delay);
 
                 await Clients.All.SendAsync("SendDataToClient", staticFlightData);
 
@@ -130,7 +130,7 @@ namespace SignalRServer.Hubs
 
         private async Task DeleteOldConnections()
         {
-            await Task.Factory.StartNew(() =>
+            await Task.Factory.StartNew(async () =>
             {
                 if (connectionsToBeRemoved != null)
                 {
@@ -172,20 +172,19 @@ namespace SignalRServer.Hubs
         {
             try
             {
-                int sleepTimeInMs = 2000;
                 string path = $"Data/{routeName.ToUpper()}_{direction.ToUpper()}.json";
                 var Cordinates = File.ReadAllText(@path);
                 var points = Newtonsoft.Json.JsonConvert.DeserializeObject<List<FlightData>>(Cordinates);
                 foreach (var nextFlightData in points)
                 {
-                    Thread.Sleep(sleepTimeInMs);
+                    Thread.Sleep(delay);
                     nextFlightData.personName = personName;
                     nextFlightData.routeName = routeName;
                     nextFlightData.connectionId = Context.ConnectionId;
                     nextFlightData.direction = direction;
                     await Clients.All.SendAsync("ReceiveUpdateForStatus", nextFlightData);
                 }
-                Thread.Sleep(sleepTimeInMs);
+                Thread.Sleep(delay);
                 await Clients.All.SendAsync("RemovePlane", Context.ConnectionId);
             }
             catch (Exception ex)
@@ -196,11 +195,10 @@ namespace SignalRServer.Hubs
 
         private async Task InitiateFlight(string personName, string routeName, List<FlightData> flightDatas, string direction)
         {
-            int sleepTimeInMs = 2000;
             int i = 1;
             do
             {
-                Thread.Sleep(sleepTimeInMs);
+                Thread.Sleep(delay);
                 var nextFlightData = flightDatas.SingleOrDefault(s => s.orderId == i);
                 nextFlightData.personName = personName;
                 nextFlightData.routeName = routeName;
@@ -209,7 +207,7 @@ namespace SignalRServer.Hubs
                 await Clients.All.SendAsync("ReceiveUpdateForStatus", nextFlightData);
                 i++;
             } while (flightDatas.FirstOrDefault(s => s.orderId == i) != null);
-            Thread.Sleep(sleepTimeInMs);
+            Thread.Sleep(delay);
             await Clients.All.SendAsync("RemovePlane", Context.ConnectionId);
         }
 
