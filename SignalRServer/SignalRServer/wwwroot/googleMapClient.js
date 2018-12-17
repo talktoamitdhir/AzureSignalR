@@ -36,8 +36,9 @@ setupConnection = () => {
         .build();
 
     connection.on("ReceiveUpdateForStatus", (update) => {
+        removeFromMarkers(update.connectionId);
         addUpdateConnectionIdData(update);
-        placeAllMarkers(update.direction);
+        placeAllMarkers(update.direction, update.connectionId);
     });
 
     connection.on("NewFlight", (update) => {
@@ -46,19 +47,37 @@ setupConnection = () => {
 
     connection.on("Finished", (connectionId) => {
         removeFromMarkers(connectionId);
-        placeAllMarkers("left");
+        placeAllMarkers("left", connectionId);
         connection.stop();
     });
 
     connection.on("RemovePlane", (connectionId) => {
         removeFromMarkers(connectionId);
-        placeAllMarkers("left");
+        placeAllMarkers("left", connectionId);
+    });
+
+    connection.on("SendDataToClient", (listOfMarkers) => {
+        removeAllMarkers();
+        setNewListOfMarkers(listOfMarkers);
+        placeAllNewMarkers();
     });
 
     connection.start()
         .catch(err => console.error(err.toString()));
 
 };
+
+function setNewListOfMarkers(listOfMarkers) {
+    markers = listOfMarkers;
+}
+
+function removeAllMarkers() {
+    for (var i = 0; i < markers_array.length; i++) {
+        markers_array[i].setMap(null);
+    }
+    marker = [];
+    markers_array = [];
+}
 
 function placeMarker(lat, lng) {
 
@@ -76,10 +95,7 @@ function placeMarker(lat, lng) {
 }
 
 function addUpdateConnectionIdData(data) {
-    //console.log(markers);
-    //console.log(data.connectionId);
-    //console.log(markers.some(item => item.connectionId === data.connectionId));
-    if (markers.some(item => item.connectionId === data.connectionId)) {
+    if (markers.some(item => item.connectionId == data.connectionId)) {
         var currentMarker = markers.find(item => item.connectionId === data.connectionId);
         currentMarker.lat = data.lat;
         currentMarker.lng = data.lng;
@@ -88,14 +104,38 @@ function addUpdateConnectionIdData(data) {
     }
 }
 
-function placeAllMarkers(direction) {
+function placeAllNewMarkers() {
 
-    console.log(direction);
+    var icon_direction;
 
-    for (var i = 0; i < markers_array.length; i++) {
-        markers_array[i].setMap(null);
-    }
+    markers.forEach(function (feature) {
 
+        if (feature.direction != "none") {
+
+            if (feature.direction == "left") {
+                icon_direction = "plane_left.png";
+            } else if (feature.direction == "right") {
+                icon_direction = "plane_right.png";
+            }
+
+            var marker = new google.maps.Marker({
+                position: { lat: feature.lat, lng: feature.lng },
+                icon: icon_direction,
+                map: map,
+                title: feature.personName,
+                id: feature.connectionId
+            });
+
+            icon_direction = "";
+
+            markers_array.push(marker);
+
+        }
+        
+    });
+}
+
+function placeAllMarkers(direction, connectionId) {
     var icon_direction;
 
     if (direction == "left") {
@@ -119,8 +159,16 @@ function placeAllMarkers(direction) {
 }
 
 function removeFromMarkers(connectionId) {
-    var currentMarker = markers.findIndex(item => item.connectionId === connectionId);
+    var currentMarker = markers.findIndex(item => item.connectionId == connectionId);
     markers.splice(currentMarker, 1);
+
+    var currentMarker_array = markers_array.findIndex(item => item.id == connectionId);
+    for (var i = 0; i < markers_array.length; i++) {
+        if (markers_array[i].id == connectionId) {
+            markers_array[i].setMap(null);
+        }
+    }
+    markers_array.splice(currentMarker_array, 1);
 }
 
 function placeJapanMarker() {
