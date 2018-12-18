@@ -5,8 +5,8 @@ var map;
 var markers = [];
 var markers_array = [];
 
-//var signalRHubUrl = "http://localhost:53537/flightsimulationhub";
-var signalRHubUrl = "https://signalr-monthly.azurewebsites.net/flightsimulationhub";
+var signalRHubUrl = "http://localhost:53537/flightsimulationhub";
+//var signalRHubUrl = "https://signalr-monthly.azurewebsites.net/flightsimulationhub";
 var mapCenterLocation = { lat: 31.6347485, lng: -8.0778939 };
 
 document.getElementById("submit").addEventListener("click", e => {
@@ -14,6 +14,8 @@ document.getElementById("submit").addEventListener("click", e => {
     const personName = document.getElementById("personName").value;
     const routeName = document.getElementById("startAddress").value + "_" + document.getElementById("destinationAddress").value;
     connection.invoke("GetUpdateForStatus", personName, routeName);
+    document.getElementById("submit").disabled = true;
+    setTimeout(function () { document.getElementById("submit").disabled = false; }, 40000);
 });
 
 function initMap() {
@@ -52,7 +54,7 @@ setupConnection = () => {
     });
 
     connection.on("RemovePlane", (connectionId) => {
-        removeFromMarkers(connectionId);        
+        removeFromMarkers(connectionId);
     });
 
     connection.on("SendDataToClient", (listOfMarkers) => {
@@ -130,7 +132,7 @@ function placeAllNewMarkers() {
             markers_array.push(marker);
 
         }
-        
+
     });
 }
 
