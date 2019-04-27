@@ -2,7 +2,8 @@ var connection = null;
 var map;
 var markers = [];
 var markers_array = [];
-var signalRHubUrl = "http://localhost:53537/flightsimulationhub";
+//var signalRHubUrl = "http://localhost:53537/flightsimulationhub";
+var signalRHubUrl = "https://gabsignalr.azurewebsites.net/flightsimulationhub";
 var mapCenterLocation = {lat:31.6347485, lng:-8.0778939};
 var icons = {
     greenPlane : {
