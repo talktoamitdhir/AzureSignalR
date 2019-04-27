@@ -10,6 +10,8 @@ namespace SignalRServer
 {
     public class Startup
     {
+        private const string connectionString = "Endpoint=https://gabsignalr2019.service.signalr.net;AccessKey=PvbodswTy9vMDIPHPoyAXrgsBdaU867rSswyW6ipS0M=;Version=1.0;";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -29,7 +31,9 @@ namespace SignalRServer
                 c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
             });
 
-            services.AddSignalR();
+            //services.AddSignalR();
+
+            services.AddSignalR().AddAzureSignalR(connectionString);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -59,8 +63,12 @@ namespace SignalRServer
                 .AllowCredentials()
                 );
 
-            app.UseSignalR(routes => routes.MapHub<FlightSimulationHub>("/flightsimulationhub"));
-            
+            //app.UseSignalR(routes => routes.MapHub<FlightSimulationHub>("/flightsimulationhub"));
+
+            //app.UseFileServer();
+
+            app.UseAzureSignalR(routes => routes.MapHub<FlightSimulationHub>("/flightsimulationhub"));
+
             app.UseMvc();
         }
     }
