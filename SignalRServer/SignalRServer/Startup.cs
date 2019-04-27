@@ -10,7 +10,7 @@ namespace SignalRServer
 {
     public class Startup
     {
-        private const string connectionString = "Endpoint=https://gabsignalr2019.service.signalr.net;AccessKey=PvbodswTy9vMDIPHPoyAXrgsBdaU867rSswyW6ipS0M=;Version=1.0;";
+        private const string connectionString = "Endpoint=https://gabsignal.service.signalr.net;AccessKey=xDxsLSG/exYCW4DM0p7gIzqV1MLYPsDN+t7tqtywwUc=;Version=1.0;";
 
         public Startup(IConfiguration configuration)
         {
